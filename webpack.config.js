@@ -15,17 +15,18 @@ const webpackPlugins = []
 
 // 如果是本地开发调试模式，则以example中的测试文件作为Entry Files
 if (isWDSMode) {
-  glob.sync('example/**/*.js', {
+  glob.sync('example/**/*.ts', {
     cwd: rootDir
   }).forEach((filePath) => {
     entryFiles[ getFileName(filePath) ] = `./${filePath}`
   })
 
+  // WDS默认支持liveReload，不过需要开启HtmlWebpackPlugin插件
   webpackPlugins.push(new HtmlWebpackPlugin({
     template: path.join(__dirname, 'example/template.html')
   }))
 } else {
-  entryFiles['index'] = path.join(rootDir, 'index.js')
+  entryFiles['index'] = path.join(rootDir, 'index.ts')
 }
 
 module.exports = {
@@ -41,12 +42,14 @@ module.exports = {
     libraryTarget: 'umd',
     libraryExport: 'default'
   },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js", ".json"]
+  },
   module: {
-    rules: [{
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: 'babel-loader'
-    }]
+    rules: [
+      { test: /\.tsx?$/, loader: "awesome-typescript-loader" },
+      { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
+    ]
   },
   plugins: webpackPlugins
 }
