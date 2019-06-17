@@ -1,6 +1,9 @@
 const path = require('path')
 const glob = require('glob')
+
+const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 const devPort = 8080
 const rootDir = __dirname
@@ -33,6 +36,7 @@ module.exports = {
   mode: 'production',
   entry: entryFiles,
   devServer: {
+    hot: true,
     port: devPort,
     contentBase: path.join(__dirname, 'example')
   },
@@ -51,5 +55,9 @@ module.exports = {
       { enforce: "pre", test: /\.js$/, loader: "source-map-loader" }
     ]
   },
-  plugins: webpackPlugins
+  plugins: [
+    new CleanWebpackPlugin(),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ].concat(webpackPlugins)
 }
