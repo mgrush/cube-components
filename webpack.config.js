@@ -1,7 +1,8 @@
 const path = require('path')
 const glob = require('glob')
-
 const webpack = require('webpack')
+
+const Happypack = require('happypack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
@@ -18,7 +19,7 @@ const webpackPlugins = []
 
 // 如果是本地开发调试模式，则以example中的测试文件作为Entry Files
 if (isWDSMode) {
-  glob.sync('example/**/*.ts', {
+  glob.sync('example/**/*.{ts,tsx,js,jsx}', {
     cwd: rootDir
   }).forEach((filePath) => {
     entryFiles[ getFileName(filePath) ] = `./${filePath}`
@@ -36,7 +37,9 @@ module.exports = {
   mode: 'production',
   entry: entryFiles,
   devServer: {
-    hot: true,
+    inline: true, 
+    hotOnly: true,
+    compress: !isWDSMode,
     port: devPort,
     contentBase: path.join(__dirname, 'example')
   },
@@ -49,22 +52,29 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".tsx", ".js", ".json"]
   },
+  externals: {
+    "react": "React",
+    "react-dom": "ReactDOM"
+  },
   module: {
     rules: [
       { 
         test: /\.tsx?$/, 
+        exclude: /node_modules/,
         loader: ["babel-loader", "awesome-typescript-loader"]
       },
       { 
         enforce: "pre", 
         test: /\.js$/, 
+        exclude: /node_modules/,
         loader: "source-map-loader" 
       }
     ]
   },
-  plugins: [
+  plugins: (!isWDSMode ? [
     new CleanWebpackPlugin(),
+  ] : []).concat(webpackPlugins, [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()
-  ].concat(webpackPlugins)
+  ])
 }
