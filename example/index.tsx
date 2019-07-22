@@ -1,11 +1,12 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
-import Button from '../src/Button'
+import Button from '../src/components/Button'
+import themeProps from '../src/common/styled'
 
 function renderComponent(){
   ReactDom.render(
-    <Button text='This is Button' onClick={() => {alert(232)}} />,
+    <Button color='primary' theme={themeProps} >This is Button</Button>,
     document.getElementById('root')
   )
 }
