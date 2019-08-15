@@ -14,4 +14,3 @@
 | onClick   | 响应按钮点击事件                                          | function       | -       |
 | throttle  | 节流时长，在给定的时间内（毫秒）只响应最开始的一次点击    | number         | 500     |
 | children | 显示的内容 | node | - |
-

@@ -1,10 +1,17 @@
-import colors from './colors'
+import { 
+  colors,
+  hairlineWidth
+} from '../styled/variables'
+
+const getBorderStyle = (bdColor: string): string => {
+  return `${hairlineWidth} solid ${bdColor}`
+}
 
 export default {
   /* 高度尺寸 */
-  smallHeight: '3.6rem',
-  mediumHeight: '4.4rem',
-  largeHeight: '5.0rem',
+  smallHeight: '2.8rem',
+  mediumHeight: '3.6rem',
+  largeHeight: '4.4rem',
 
   /* 横向留白 */
   smallPaddingH: '1.2rem',
@@ -12,14 +19,14 @@ export default {
   largePaddingH: '2.4rem',
 
   /* 字体大小 */
-  smallFontSize: '1.3rem',
-  mediumFontSize: '1.5rem',
-  largeFontSize: '1.7rem',
+  smallFontSize: '1.2rem',
+  mediumFontSize: '1.4rem',
+  largeFontSize: '1.6rem',
 
   /* 按钮圆角 */
-  smallBDRadius: '0.4rem',
-  mediumBDRadius: '0.8rem',
-  largeBDRadius: '1.2rem',
+  smallBDRadius: '0.2rem',
+  mediumBDRadius: '0.4rem',
+  largeBDRadius: '0.6rem',
 
   activeOpacity: 0.8,
 
@@ -27,68 +34,68 @@ export default {
   plain: {
     primaryFontColor: colors.primary,
     primaryBGColor: colors.transparent,
-    primaryBDColor: colors.transparent,
+    primaryBorderStyle: getBorderStyle(colors.transparent),
 
     succFontColor: colors.succ,
     succBGColor: colors.transparent,
-    succBDColor: colors.transparent,
+    succBorderStyle: getBorderStyle(colors.transparent),
 
     warningFontColor: colors.warning,
     warningBGColor: colors.transparent,
-    warningBDColor: colors.transparent,
+    warningBorderStyle: getBorderStyle(colors.transparent),
 
     dangerFontColor: colors.danger,
     dangerBGColor: colors.transparent,
-    dangerBDColor: colors.transparent,
+    dangerBorderStyle: getBorderStyle(colors.transparent),
 
     disabledFontColor: colors.disabledFontColor,
     disabledBGColor: colors.transparent,
-    disabledBDColor: colors.transparent
+    disabledBorderStyle: getBorderStyle(colors.transparent)
   },
 
   /* variant: contain 类型相关设置 */
   contain: {
     primaryFontColor: colors.white,
     primaryBGColor: colors.primary,
-    primaryBDColor: colors.transparent,
+    primaryBorderStyle: getBorderStyle(colors.transparent),
 
     succFontColor: colors.white,
     succBGColor: colors.succ,
-    succBDColor: colors.transparent,
+    succBorderStyle: getBorderStyle(colors.transparent),
 
     warningFontColor: colors.white,
     warningBGColor: colors.warning,
-    warningBDColor: colors.transparent,
+    warningBorderStyle: getBorderStyle(colors.transparent),
 
     dangerFontColor: colors.white,
     dangerBGColor: colors.danger,
-    dangerBDColor: colors.transparent,
+    dangerBorderStyle: getBorderStyle(colors.transparent),
 
     disabledFontColor: colors.disabledFontColor,
     disabledBGColor: colors.disabledColor,
-    disabledBDColor: colors.transparent
+    disabledBorderStyle: getBorderStyle(colors.transparent)
   },
 
   /* variant: outline 类型相关设置*/
   outline: {
     primaryFontColor: colors.primary,
     primaryBGColor: colors.transparent,
-    primaryBDColor: colors.primary,
+    primaryBorderStyle: getBorderStyle(colors.primary),
 
     succFontColor: colors.succ,
     succBGColor: colors.transparent,
-    succBDColor: colors.succ,
+    succBorderStyle: getBorderStyle(colors.succ),
 
     warningFontColor: colors.warning,
     warningBGColor: colors.transparent,
-    warningBDColor: colors.warning,
+    warningBorderStyle: getBorderStyle(colors.warning),
 
     dangerFontColor: colors.danger,
     dangerBGColor: colors.transparent,
-    dangerBDColor: colors.danger,
+    dangerBorderStyle: getBorderStyle(colors.danger),
 
     disabledFontColor: colors.disabledFontColor,
     disabledBGColor: colors.transparent,
-    disabledBDColor: colors.disabledColor
+    disabledBorderStyle: getBorderStyle(colors.disabledColor)
   }
 }
