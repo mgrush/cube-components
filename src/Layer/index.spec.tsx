@@ -57,17 +57,16 @@ run('Component: Layer', (getContainer: getContainerType) => {
     let container = getContainer()
 
     act(() => { 
-      render(<Layer closable onShow={onShow} onHide={onHide} />, container) 
+      render(<Layer onHide={onHide} />, container) 
     })
 
-    let layerElement = container.firstChild
-    
-    act(() => {
-      layerElement.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+    expect(onHide).toHaveBeenCalledTimes(1)
+
+    act(() => { 
+      render(<Layer visible onShow={onShow} />, container) 
     })
 
     expect(onShow).toHaveBeenCalledTimes(1)
-    expect(onHide).toHaveBeenCalledTimes(1)
   })
 
   it('renders with different animationType !', () => {
