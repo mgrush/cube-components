@@ -1,11 +1,11 @@
 import React from 'react'
 import ReactDom from 'react-dom'
 
-import ButtonDemo from '../src/Button/Button.demo'
+import IconDemo from '../src/Icon/Icon.demo'
 
 function renderComponent(){
   ReactDom.render(
-    <ButtonDemo />,
+    <IconDemo />,
     document.getElementById('root')
   )
 }

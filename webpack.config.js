@@ -3,8 +3,8 @@ const glob = require('glob')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 
-const { 
-  CleanWebpackPlugin 
+const {
+  CleanWebpackPlugin
 } = require('clean-webpack-plugin')
 
 const devPort = 8080
@@ -20,7 +20,7 @@ module.exports = {
   entry: entryFiles,
   mode: 'development',
   devServer: {
-    inline: true, 
+    inline: true,
     hotOnly: true,
     port: devPort,
     contentBase: path.join(__dirname, 'example')
@@ -42,14 +42,18 @@ module.exports = {
   **/
   module: {
     rules: [{
-      test: /\.tsx?$/, 
+      test: /\.tsx?$/,
       exclude: /node_modules/,
       loader: ["babel-loader", "awesome-typescript-loader"]
     }, {
-      enforce: "pre", 
-      test: /\.js$/, 
+      test: /\.svg$/,
       exclude: /node_modules/,
-      loader: "source-map-loader" 
+      loader: 'svg-inline-loader'
+    }, {
+      enforce: "pre",
+      test: /\.js$/,
+      exclude: /node_modules/,
+      loader: "source-map-loader"
     }]
   },
   plugins: [

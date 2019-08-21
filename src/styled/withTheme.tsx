@@ -1,23 +1,23 @@
-import React from 'react'
+import React, { RefAttributes } from 'react'
 import ThemeContext from './ThemeContext'
 import hoistNonReactStatics from 'hoist-non-react-statics'
 
-const getDisplayName = (WrappedComponent: React.ComponentType) => {
-  return WrappedComponent.displayName || WrappedComponent.name || 'Component';
-}
-
-export default <P extends object>(WrappedComponent: React.ComponentType<P>): React.FC<P> => {
-  const WithThemeComponent: React.FC<P> = (props: P) => (
-    <ThemeContext.Consumer>
-      {theme => (
-        <WrappedComponent {...props} theme={theme} />
-      )}
-    </ThemeContext.Consumer>
-  )
+export default <P extends object>(WrappedComponent: React.ComponentType<P>) => {
+  type ComponentInstance = typeof WrappedComponent
+  
+  const WithThemeComponent = React.forwardRef<ComponentInstance, P>((props, ref) => {
+      return (
+        <ThemeContext.Consumer>
+          {theme => (
+            <WrappedComponent {...props} theme={theme} ref={ref} />
+          )}
+        </ThemeContext.Consumer>
+      )
+  })
 
   hoistNonReactStatics(WithThemeComponent, WrappedComponent)
 
-  WithThemeComponent.displayName = `WithTheme(${getDisplayName(WrappedComponent)})`
+  WithThemeComponent.displayName = `WithTheme(${WrappedComponent.displayName || WrappedComponent.name || 'Component'})`
 
   return WithThemeComponent
 }

@@ -9,7 +9,7 @@ const getBorderStyle = (bdColor: string): string => {
 
 export default {
   /* 高度尺寸 */
-  smallHeight: '2.8rem',
+  smallHeight: '2.4rem',
   mediumHeight: '3.6rem',
   largeHeight: '4.4rem',
 
