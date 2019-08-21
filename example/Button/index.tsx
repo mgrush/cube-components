@@ -1,6 +1,6 @@
 import React from 'react'
-import Button from './Button'
 import styled from 'styled-components'
+import Button from 'Button'
 
 const Container = styled.div`
   & > .cui-button {

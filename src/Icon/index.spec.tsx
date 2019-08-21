@@ -3,7 +3,7 @@ import { act } from 'react-dom/test-utils'
 import { render } from 'react-dom'
 import { run, getContainerType } from '../jestSetup'
 
-import Icon from './Icon'
+import Icon from './'
 
 run('Component: Icon', (getContainer: getContainerType) => {
   it('renders with svg name for different size !', () => {
