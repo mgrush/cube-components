@@ -1,4 +1,4 @@
-# abc
+# cube-components [![Build Status](https://travis-ci.com/mgrush/cube-components.svg?branch=master)](https://travis-ci.com/mgrush/cube-components)
 
 ### 常见问题
 

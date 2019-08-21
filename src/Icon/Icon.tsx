@@ -74,7 +74,7 @@ const Icon: React.SFC<IconProps> = React.memo(props => {
     }
   }
   
-  return <Container {...customProps} />
+  return <Container data-testid='a' {...customProps} />
 })
 
 Icon.defaultProps = {
