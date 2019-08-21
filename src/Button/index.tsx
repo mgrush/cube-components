@@ -14,7 +14,6 @@ interface ButtonProps {
   loading?: boolean;
   icon?: string | object;
   iconPosition?: 'left' | 'right';
-  throttle?: number;
   theme?: object;
   children?: React.ReactNode; 
   onClick?: (event: React.MouseEvent) => void;
@@ -52,7 +51,7 @@ const Container = styled.div<ButtonProps>`
 const Button: React.SFC<ButtonProps> = React.memo(props => {
   const className = clsx('cui-button', {
     disabled: props.disabled,
-    className: props.className
+    [props.className]: props.className
   })
 
   return (
@@ -66,7 +65,6 @@ Button.defaultProps = {
   type: 'primary',
   size: 'medium',
   variant: 'contain',
-  throttle: 500,
   iconPosition: 'left'
 }
 
