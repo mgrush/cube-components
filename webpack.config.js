@@ -32,7 +32,8 @@ module.exports = {
     libraryExport: 'default'
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
+    modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
   /**
   externals: {

@@ -70,7 +70,7 @@ const Icon: React.SFC<IconProps> = React.memo(props => {
       [props.className]: props.className 
     }),
     dangerouslySetInnerHTML: {
-      __html: props.name ? require(`./svg-icon/${props.name}.svg`) : ''
+      __html: props.name ? require(`./icons/${props.name}.svg`) : ''
     }
   }
   

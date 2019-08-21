@@ -1,8 +1,8 @@
 import { colors } from './variables'
 import { DefaultTheme } from 'styled-components'
 
-import icon from '../Icon/Icon.styled'
-import button from '../Button/Button.styled'
+import icon from '../Icon/index.styled'
+import button from '../Button/index.styled'
 
 const defaultTheme: DefaultTheme = {
   colors,

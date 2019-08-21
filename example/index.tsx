@@ -1,7 +1,6 @@
 import React from 'react'
 import ReactDom from 'react-dom'
-
-import IconDemo from '../src/Icon/Icon.demo'
+import IconDemo from './Icon'
 
 function renderComponent(){
   ReactDom.render(
