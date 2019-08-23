@@ -6,23 +6,15 @@ import { run, getContainerType } from 'jestSetup'
 import Layer from '.'
 
 run('Component: Layer', (getContainer: getContainerType) => {
-  it('renders with different showType !', () => {
+  it('renders with different showFrom !', () => {
     let container = getContainer()
 
     act(() => { 
       render(<Layer />, container) 
-      render(<Layer showType='slideLeft' />, container) 
-      render(<Layer showType='slideRight' />, container) 
-      render(<Layer showType='slideUp' />, container) 
-      render(<Layer showType='slideDown' />, container) 
-    })
-  })
-
-  it('renders with transparent layer !', () => {
-    let container = getContainer()
-
-    act(() => { 
-      render(<Layer />, container) 
+      render(<Layer showFrom='left' />, container) 
+      render(<Layer showFrom='right' />, container) 
+      render(<Layer showFrom='bottom' />, container) 
+      render(<Layer showFrom='top' />, container) 
     })
   })
 
@@ -41,14 +33,6 @@ run('Component: Layer', (getContainer: getContainerType) => {
     })
 
     expect(onClick).toHaveBeenCalledTimes(1)
-  })
-
-  it('renders with custom size !', () => {
-    let container = getContainer()
-
-    act(() => { 
-      render(<Layer width={240} height={300} />, container) 
-    })
   })
 
   it('renders with hooks !', () => {

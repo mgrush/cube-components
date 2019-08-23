@@ -1,3 +1,3 @@
 export default {
-  backgroundColor: 'rgba(0, 0, 0, .6)'
+  backgroundColor: 'rgba(0, 0, 0, .1)'
 }
