@@ -6,15 +6,15 @@ import { run, getContainerType } from 'jestSetup'
 import Layer from '.'
 
 run('Component: Layer', (getContainer: getContainerType) => {
-  it('renders with different showFrom !', () => {
+  it('renders with different position !', () => {
     let container = getContainer()
 
     act(() => { 
       render(<Layer />, container) 
-      render(<Layer showFrom='left' />, container) 
-      render(<Layer showFrom='right' />, container) 
-      render(<Layer showFrom='bottom' />, container) 
-      render(<Layer showFrom='top' />, container) 
+      render(<Layer position='left' />, container) 
+      render(<Layer position='right' />, container) 
+      render(<Layer position='bottom' />, container) 
+      render(<Layer position='top' />, container) 
     })
   })
 
@@ -41,27 +41,19 @@ run('Component: Layer', (getContainer: getContainerType) => {
     let container = getContainer()
 
     act(() => { 
-      render(<Layer onHide={onHide} />, container) 
+      render(<Layer visible onShow={onShow} onHide={onHide} />, container) 
     })
 
-    expect(onHide).toHaveBeenCalledTimes(1)
+    let maskLayer = container.firstChild
 
     act(() => { 
-      render(<Layer visible onShow={onShow} />, container) 
+      maskLayer.dispatchEvent(new MouseEvent('click', { bubbles: true }))
     })
 
-    expect(onShow).toHaveBeenCalledTimes(1)
-  })
-
-  it('renders with different animationType !', () => {
-    let container = getContainer()
-
-    // 尚未考虑清楚如何设计动画类型
-    // https://cssanimation.rocks/ui-animation-react/
-    // https://reactjsexample.com/tag/animation/
-    act(() => { 
-      render(<Layer animationType='' />, container) 
-    })
+    setTimeout(() => {
+      expect(onHide).toHaveBeenCalledTimes(1)
+      expect(onShow).toHaveBeenCalledTimes(1)
+    }, 300)
   })
 
   it('renders with custom children !', () => {

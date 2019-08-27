@@ -1,58 +1,121 @@
-import React, { useState, useEffect } from 'react'
 import clsx from 'clsx'
+import React from 'react'
 import styled from 'styled-components'
+
 import { withTheme } from '../styled'
+import { isFunction } from '../util'
+import { Transition } from 'react-transition-group'
+import { LayerProps, ContainerProps, MaskLayerProps } from './index.props'
 
-interface LayerProps {
-  // 浮层是否可见，默认不可见
-  visible?: boolean
-
-  className?: string
-
-  // 浮层显示或者隐藏的动画方向
-  showFrom?: 'left' | 'right' | 'top' | 'bottom'
-
-  // 动画显示效果
-  animationType?: string // TODO
-
-  children?: React.ReactNode
-
-  // 显示与隐藏渲染完成之后执行的回调
-  onShow?: (el: HTMLDivElement) => void
-  onHide?: (el: HTMLDivElement) => void
-
-  onClick?: (e: React.MouseEvent) => void
-}
-
-const Container = styled.div`
+const MaskLayer = styled.div<MaskLayerProps>`
   position: fixed;
-  bottom: 0;
+  top: 0;
   left: 0;
-  right: 0;
+  width: ${props => props.visible ? '100vw' : 0};
+  height: ${props => props.visible ? '100vh' : 0};
+  transition: opacity ${props => props.animateDuration / 1000}s;
+  opacity: ${props => ['entering', 'entered'].includes(props.animateState) ? 1 : 0};
+  background-color: ${props => props.theme.layer.maskLayerBgColor};
 `
 
-const Layer: React.FC<LayerProps> = React.memo(props => {
-  const className: string = clsx('cui-layer', {
-    [props.className]: props.className,
-    [`from-${props.showFrom}`]: props.showFrom
-  })
+const Container = styled.div<ContainerProps>`
+  position: fixed;
+  transition: ${props => props.animateDuration / 1000}s;
+  background-color: ${props => props.theme.layer.contentBgColor};
 
-  // 关联容器引用，方便在onShow | onHide中传入进去
-  const layerRef: React.RefObject<HTMLDivElement> = React.createRef()
+  &.posi-center {
+    left: 50vw;
+    top: calc(50vh + ${props => props.theme.layer.verticalOffset});
+    transform: translate3D(-50%, -50%, 0) scale(${props => ['entering', 'entered'].includes(props.animateState) ? 1 : 0});
+  }
 
-  // 当浮层的可见性发生变化的时候，触发onShow | onHide事件回调
-  useEffect(() => {
-    if (props.visible && typeof props.onShow === 'function') {
-      props.onShow(layerRef.current)
-    }
+  &.posi-left, &.posi-right {
+    top: 0;
+    height: 100vh;
+    max-width: ${props => props.theme.layer.maxWidth};
+  }
 
-    if (!props.visible && typeof props.onHide === 'function') {
-      props.onHide(layerRef.current)
-    }
-  }, [props.visible])
-  
+  &.posi-top, &.posi-bottom {
+    left: 0;
+    width: 100vw;
+    max-height: ${props => props.theme.layer.maxHeight};
+  }
+
+  &.posi-left {
+    left: 0;
+    border-radius: ${props => `0 ${props.borderRadius}rem ${props.borderRadius}rem 0`};
+    transform: translateX(${props => ['entering', 'entered'].includes(props.animateState) ? 0 : '-100%'});
+  }
+
+  &.posi-right {
+    right: 0;
+    border-radius: ${props => `${props.borderRadius}rem 0 0 ${props.borderRadius}rem`};
+    transform: translateX(${props => ['entering', 'entered'].includes(props.animateState) ? 0 : '100%'});
+  }
+
+  &.posi-top {
+    top: 0;
+    border-radius: ${props => `0 0 ${props.borderRadius}rem ${props.borderRadius}rem`};
+    transform: translateY(${props => ['entering', 'entered'].includes(props.animateState) ? 0 : '-100%'});
+  }
+
+  &.posi-bottom {
+    bottom: 0;
+    border-radius: ${props => `${props.borderRadius}rem ${props.borderRadius}rem 0 0`};
+    transform: translateY(${props => ['entering', 'entered'].includes(props.animateState) ? 0 : '100%'});
+  }
+`
+
+const Layer: React.FC<LayerProps> = React.memo(({
+  visible,
+  className,
+  position,
+  onShow,
+  onHide,
+  children,
+  theme,
+  onClick,
+  borderRadius = 0,
+  animateDuration = 300
+}) => {
+  const contentRef: React.RefObject<HTMLDivElement> = React.createRef()
+
+  const maskLayerProps = {
+    visible,
+    theme,
+    animateDuration,
+    onClick: (event: React.MouseEvent) => isFunction(onClick) && onClick(event)
+  }
+
+  const transitionProps = {
+    in: visible,
+    timeout: animateDuration,
+    onEntered: () => isFunction(onShow) && onShow(contentRef.current),
+    onExited: () => isFunction(onHide) && onHide(contentRef.current)
+  }
+
+  const containerProps = {
+    visible,
+    className: clsx('cui-layer-container', {
+      className,
+      [`posi-center`]: !position,
+      [`posi-${position}`]: position,
+    }),
+    theme,
+    children,
+    borderRadius,
+    animateDuration
+  }
+
   return (
-    <Container {...props} ref={layerRef} className={className} />
+    <Transition {...transitionProps}>
+      {animateState => (
+        <React.Fragment>
+          <MaskLayer {...maskLayerProps} animateState={animateState} />
+          <Container {...containerProps} animateState={animateState} />
+        </React.Fragment>
+      )}
+    </Transition>
   )
 })
 
