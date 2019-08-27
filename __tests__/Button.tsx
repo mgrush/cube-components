@@ -1,9 +1,9 @@
 import React from 'react'
+import Button from 'Button'
+
 import { act } from 'react-dom/test-utils'
 import { render } from 'react-dom'
-import { run, getContainerType } from 'jestSetup'
-
-import Button from './'
+import { run, getContainerType } from './jestSetup'
 
 run('Component: Button', (getContainer: getContainerType) => {
   it('renders with different type !', () => {
