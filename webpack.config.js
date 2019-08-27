@@ -2,70 +2,44 @@ const path = require('path')
 const glob = require('glob')
 const webpack = require('webpack')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-
-const {
-  CleanWebpackPlugin
-} = require('clean-webpack-plugin')
-
-const devPort = 8080
-const entryFiles = {}
-const rootDir = __dirname
-const getFileName = (filePath) => (filePath.match(/\/([^\.]+)\..+$/) || [])[1]
-
-glob.sync('example/**/*.{ts,tsx,js,jsx}', { cwd: rootDir }).forEach(filePath => {
-  entryFiles[ getFileName(filePath) ] = `./${filePath}`
-})
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 module.exports = {
-  entry: entryFiles,
+  entry: './example/index',
   mode: 'development',
   devServer: {
     inline: true,
     hotOnly: true,
-    port: devPort,
+    port: 8080,
     contentBase: path.join(__dirname, 'example')
   },
   output: {
     filename: '[name].js',
-    path: path.join(__dirname, 'dist'),
-    libraryTarget: 'umd',
-    libraryExport: 'default'
+    path: path.join(__dirname, 'dist')
   },
   resolve: {
-    extensions: ['.ts', '.tsx', '.js', '.json'],
+    extensions: ['.ts', '.tsx', '.js', '.jsx'],
     modules: [path.resolve(__dirname, 'src'), 'node_modules']
   },
-  /**
-  externals: {
-    'react': 'React',
-    'react-dom': 'ReactDOM'
-  },
-  **/
   module: {
     rules: [{
       test: /\.tsx?$/,
       exclude: /node_modules/,
-      loader: ["babel-loader", "awesome-typescript-loader"]
+      loader: ['awesome-typescript-loader']
+    }, {
+      test: /\.jsx?/,
+      exclude: /node_modules/,
+      loader: ['babel-loader']
     }, {
       test: /\.svg$/,
       exclude: /node_modules/,
-      loader: 'svg-inline-loader'
-    }, {
-      enforce: "pre",
-      test: /\.js$/,
-      exclude: /node_modules/,
-      loader: "source-map-loader"
+      loader: ['svg-inline-loader']
     }]
   },
   plugins: [
     new CleanWebpackPlugin(),
     new HtmlWebpackPlugin({
       template: path.join(__dirname, 'example/template.html')
-    }),
-    new webpack.DefinePlugin({
-      'process.env': {
-        'NODE_ENV': JSON.stringify('development')
-      }
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin()

@@ -5,5 +5,6 @@ declare module 'styled-components' {
     colors: object
     button: object
     icon: object
+    layer: object
   }
 }
