@@ -1,8 +1,8 @@
 import React from 'react'
-import Layer from 'Layer'
 import { render } from 'react-dom'
 import { act } from 'react-dom/test-utils'
 import { run, getContainerType } from './jestSetup'
+import { Layer } from '../src'
 
 run('Component: Layer', (getContainer: getContainerType) => {
   it('renders with different position !', () => {
